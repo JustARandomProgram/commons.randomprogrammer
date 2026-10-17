@@ -35,17 +35,16 @@ public class Vector {
 
     // Arithimetic Methods
     /**
-     * Adds 2 vectors of the same dimension
-     * @param vec1 The first vector to add
-     * @param vec2 The second vector to add
+     * Adds the vector to the original vector of the same dimension
+     * @param vec The second vector to add
      * @return The sum of the vectors
      * @throws DimensionsAreNotEqualException If the dimensions of the vectors are not equal
      */
-    public static Vector add(Vector vec1, Vector vec2) {
-        if (vec1.dimensions != vec2.dimensions) {throw new DimensionsAreNotEqualExeception("Dimension of the vectors are not equal");}
-        float[] newValues = new float[vec1.dimensions];
+    public Vector add(Vector vec) {
+        if (dimensions != vec.dimensions) {throw new DimensionsAreNotEqualExeception("Dimension of the vectors are not equal");}
+        float[] newValues = new float[dimensions];
         for (int i = 0; i < newValues.length; i++) {
-            newValues[i] = vec1.values[i] + vec2.values[i];
+            newValues[i] = values[i] + vec.values[i];
         }
         return new Vector(newValues);
     }

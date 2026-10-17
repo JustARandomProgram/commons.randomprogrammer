@@ -1,12 +1,14 @@
 package math.linearalgebra.Matrix;
 
+import math.interfaces.Addition;
+import math.interfaces.NativeOperators;
 import math.linearalgebra.Vector.Vector;
 
 /**
  * @version 1.0
  * @author JustARandomProgram
  */
-public class Matrix {
+public class Matrix implements Addition<Matrix> {
     public int columns;
     public int rows;
     protected float[][] values;
@@ -36,6 +38,7 @@ public class Matrix {
      * @param columns The amount of collumns the matrix has
      */
     public Matrix(int rows, int columns) {
+        if (rows <= 0 || columns <= 0) throw new Vector.InvalidDimensionsException("rows or columns cannot be zero or less");
         this.columns = columns;
         this.rows = rows;
         this.values = new float[rows][columns];
@@ -83,30 +86,28 @@ public class Matrix {
         }
     }
 
-    // STATIC METHODS
-
     /**
      * Multiples the matrices
      * @param matrixA The first matrix you're multiplying
      * @param matrixB The second matrix you're multiplying
      * @return The product of the matrices
      */
-    public static Matrix multiply(Matrix matrixA, Matrix matrixB) {
-        if (matrixA.columns != matrixB.rows) throw new Vector.InvalidDimensionsException("The number of columns in matrixA isn't equal to the number of rows in matrixB");
-        float[][] newValues = new float[matrixA.rows][matrixB.columns];
+    public Matrix multiply(Matrix matrix) {
+        if (columns != matrix.rows) throw new Vector.InvalidDimensionsException("The number of columns in matrixA isn't equal to the number of rows in matrixB");
+        float[][] newValues = new float[rows][matrix.columns];
 
-        Vector[] rowsAsVectors = new Vector[matrixA.rows];
-        for (int row = 0; row < matrixA.rows; row++) {
-            rowsAsVectors[row] = matrixA.getRow(row);
+        Vector[] rowsAsVectors = new Vector[rows];
+        for (int row = 0; row < rows; row++) {
+            rowsAsVectors[row] = getRow(row);
         }
 
-        Vector[] columnsAsVectors = new Vector[matrixB.columns];
-        for (int column = 0; column < matrixB.columns; column++) {
-            columnsAsVectors[column] = matrixB.getColumn(column);
+        Vector[] columnsAsVectors = new Vector[matrix.columns];
+        for (int column = 0; column < matrix.columns; column++) {
+            columnsAsVectors[column] = matrix.getColumn(column);
         }
 
-        for (int row = 0; row < matrixA.rows; row++) {
-            for (int column = 0; column < matrixB.columns; column++) {
+        for (int row = 0; row < rows; row++) {
+            for (int column = 0; column < matrix.columns; column++) {
                 newValues[row][column] = Vector.dot(rowsAsVectors[row], columnsAsVectors[column]);
             }
         }
@@ -115,22 +116,25 @@ public class Matrix {
     }
 
     /**
-     * Adds 2 matrices
-     * @param matrixA The first matrix you're adding
+     * Adds a matrix to the original matrix
      * @param matrixB The second matrix you're adding
      * @return The sum of the matrices
      */
-    public static Matrix add(Matrix matrixA, Matrix matrixB) {
-        if (!(matrixA.rows == matrixB.rows && matrixA.columns == matrixB.columns)) throw new Vector.DimensionsAreNotEqualExeception("The dimensions of the matrices are not equal");
+    public Matrix add(Matrix matrix) {
+        if (!(rows == matrix.rows && columns == matrix.columns)) throw new Vector.DimensionsAreNotEqualExeception("The dimensions of the matrices are not equal");
 
-        float[][] newValues = new float[matrixA.rows][matrixA.columns];
-        for (int row = 0; row < matrixA.rows; row++) {
-            for (int column = 0; column < matrixA.columns; column++) {
-                newValues[row][column] = matrixA.values[row][column] + matrixB.values[row][column];
+        float[][] newValues = new float[rows][columns];
+        for (int row = 0; row < rows; row++) {
+            for (int column = 0; column < columns; column++) {
+                newValues[row][column] = values[row][column] + matrix.values[row][column];
             }
         }
 
         return new Matrix(newValues);
+    }
+
+    public Matrix zero() {
+        return new Matrix(rows, columns);
     }
 
     /**
