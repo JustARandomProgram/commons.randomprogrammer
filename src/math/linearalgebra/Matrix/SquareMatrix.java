@@ -21,10 +21,10 @@ public class SquareMatrix extends Matrix {
      * @param values The values to give to the matrix
      * @throws InconsistentDimensionsException If the number of columns and rows are not equal
      */
-    public SquareMatrix(float[][] values) {
+    public SquareMatrix(double[][] values) {
         super(values);
         this.order = values.length;
-        for (float[] row : values) {
+        for (double[] row : values) {
             if (row.length != this.order) throw new InconsistentDimensionsException("The given values are not square");
         }
     }
@@ -60,11 +60,11 @@ public class SquareMatrix extends Matrix {
      */
     public Matrix inverse() {
         SquareMatrix adjoint = new SquareMatrix(this.order);
-        float determinant = this.determinant();
+        double determinant = this.determinant();
         if (determinant == 0) throw new MatrixIsNotInvertibleException("The matrix has no inverse");
         for (int row = 0; row < this.order; row++) {
             for (int column = 0; column < this.order; column++) {
-                adjoint.set(row, column, (float)(this.subMatrix(row, column).determinant() * Math.pow(-1, row + column)));
+                adjoint.set(row, column, (double)(this.subMatrix(row, column).determinant() * Math.pow(-1, row + column)));
             }
         }
         return adjoint.transpose().scale(1/determinant);
@@ -75,22 +75,22 @@ public class SquareMatrix extends Matrix {
      * @return The determinant of the matrix
      * @see https://www.geeksforgeeks.org/dsa/determinant-of-a-matrix/
      */
-    public float determinant() {
+    public double determinant() {
         if (this.order == 1) {
             return this.get(0, 0);
         }
         else if (this.order == 2) {
             return this.get(0, 0) * this.get(1, 1) - this.get(0, 1) * this.get(1, 0);
         }
-        float[][] matrixValues = new float[this.order][this.order];
+        double[][] matrixValues = new double[this.order][this.order];
         for (int row = 0; row < this.order; row++) {
             matrixValues[row] = this.values[row].clone();
         }
-        float num1, num2;
-        float total = 1;
-        float determinant = 1;
+        double num1, num2;
+        double total = 1;
+        double determinant = 1;
         int index;
-        float[] temp = new float[this.order+1];
+        double[] temp = new double[this.order+1];
 
         for (int i = 0; i < this.order; i++) {
             index = i;
@@ -102,7 +102,7 @@ public class SquareMatrix extends Matrix {
             }
             if (index != i) {
                 for (int j = 0; j < this.order; j++) {
-                    float tempSwap = matrixValues[index][j];
+                    double tempSwap = matrixValues[index][j];
                     matrixValues[index][j] = matrixValues[i][j];
                     matrixValues[i][i] = tempSwap;
                 }

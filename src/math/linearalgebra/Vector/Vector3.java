@@ -5,9 +5,9 @@ package math.linearalgebra.Vector;
  * @author JustARandomProgram
  */
 public class Vector3 extends Vector {
-    public float x;
-    public float y;
-    public float z;
+    public double x;
+    public double y;
+    public double z;
 
     //EXCEPTIONS
     public static class VectorDimensionsAreNotThreeException extends RuntimeException {
@@ -20,7 +20,7 @@ public class Vector3 extends Vector {
      * Creates a 3D vector with a given x value
      * @param x The x value
      */
-    public Vector3(float x) {
+    public Vector3(double x) {
         super(x,0,0);
         this.x = x;
         this.y = 0;
@@ -32,7 +32,7 @@ public class Vector3 extends Vector {
      * @param x The x value
      * @param y The y value
      */
-    public Vector3(float x, float y) {
+    public Vector3(double x, double y) {
         super(x,y,0);
         this.x = x;
         this.y = y;
@@ -45,7 +45,7 @@ public class Vector3 extends Vector {
      * @param y The y value
      * @param z The z value
      */
-    public Vector3(float x, float y, float z) {
+    public Vector3(double x, double y, double z) {
         super(x,y,z);
         this.x = x;
         this.y = y;

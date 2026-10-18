@@ -10,7 +10,7 @@ import math.linearalgebra.Vector.Vector;
 public class Matrix implements Addition<Matrix> {
     public int columns;
     public int rows;
-    protected float[][] values;
+    protected double[][] values;
 
     //EXCEPTIONS
     public static class MatrixIsNotInvertibleException extends RuntimeException {
@@ -40,7 +40,7 @@ public class Matrix implements Addition<Matrix> {
         if (rows <= 0 || columns <= 0) throw new Vector.InvalidDimensionsException("rows or columns cannot be zero or less");
         this.columns = columns;
         this.rows = rows;
-        this.values = new float[rows][columns];
+        this.values = new double[rows][columns];
         for (int row = 0; row < this.rows; row++) {
             for (int column = 0; column < this.columns; column++) {
                 this.values[row][column] = 0;
@@ -53,7 +53,7 @@ public class Matrix implements Addition<Matrix> {
      * @param values The values to give to the matrix
      * @throws InconsistentDimensionsException If the number of columns, per row, are not equal
      */
-    public Matrix(float[][] values) {
+    public Matrix(double[][] values) {
         this.rows = values.length;
         int amountOfColumns = values[0].length;
         for (int i = 1; i < values.length; i++) {
@@ -72,7 +72,7 @@ public class Matrix implements Addition<Matrix> {
     public Matrix(Vector[] vectors) {
         this.rows = vectors[0].dimensions;
         this.columns = vectors.length;
-        this.values = new float[this.rows][this.columns];
+        this.values = new double[this.rows][this.columns];
         for (int column = 0; column < this.columns; column++) {
             if (vectors[column].dimensions == this.rows) {
                 for (int row = 0; row < this.rows; row++) {
@@ -93,7 +93,7 @@ public class Matrix implements Addition<Matrix> {
      */
     public Matrix multiply(Matrix matrix) {
         if (columns != matrix.rows) throw new Vector.InvalidDimensionsException("The number of columns in matrixA isn't equal to the number of rows in matrixB");
-        float[][] newValues = new float[rows][matrix.columns];
+        double[][] newValues = new double[rows][matrix.columns];
 
         Vector[] rowsAsVectors = new Vector[rows];
         for (int row = 0; row < rows; row++) {
@@ -107,7 +107,7 @@ public class Matrix implements Addition<Matrix> {
 
         for (int row = 0; row < rows; row++) {
             for (int column = 0; column < matrix.columns; column++) {
-                newValues[row][column] = Vector.dot(rowsAsVectors[row], columnsAsVectors[column]);
+                newValues[row][column] = rowsAsVectors[row].dot(columnsAsVectors[column]);
             }
         }
 
@@ -122,7 +122,7 @@ public class Matrix implements Addition<Matrix> {
     public Matrix add(Matrix matrix) {
         if (!(rows == matrix.rows && columns == matrix.columns)) throw new Vector.DimensionsAreNotEqualExeception("The dimensions of the matrices are not equal");
 
-        float[][] newValues = new float[rows][columns];
+        double[][] newValues = new double[rows][columns];
         for (int row = 0; row < rows; row++) {
             for (int column = 0; column < columns; column++) {
                 newValues[row][column] = values[row][column] + matrix.values[row][column];
@@ -141,7 +141,7 @@ public class Matrix implements Addition<Matrix> {
      * @return The converted matrix
      */
     public Matrix convertToMatrix(Vector vector) {
-        float[][] values = new float[vector.dimensions][1];
+        double[][] values = new double[vector.dimensions][1];
         for (int i = 0; i < vector.dimensions; i++) {
             values[i][0] = vector.get(i);
         }
@@ -191,8 +191,8 @@ public class Matrix implements Addition<Matrix> {
      * @param factor How much you're scaling the matrix
      * @return The scaled matrix
      */
-    public Matrix scale(float factor) {
-        float[][] newValues = new float[this.rows][this.columns];
+    public Matrix scale(double factor) {
+        double[][] newValues = new double[this.rows][this.columns];
         for (int row = 0; row < this.rows; row++) {
             for (int column = 0; column < this.columns; column++) {
                 newValues[row][column] = this.values[row][column] * factor;
@@ -206,7 +206,7 @@ public class Matrix implements Addition<Matrix> {
      * @return The result of this operation
      */
     public Matrix neg() {
-        float[][] newValues = new float[this.rows][this.columns];
+        double[][] newValues = new double[this.rows][this.columns];
         for (int row = 0; row < this.rows; row++) {
             for (int column = 0; column < this.columns; column++) {
                 newValues[row][column] = -this.values[row][column];
@@ -232,7 +232,7 @@ public class Matrix implements Addition<Matrix> {
      * @return The column of the matrix, as a vector
      */
     public Vector getColumn(int column) {
-        float[] values = new float[this.rows];
+        double[] values = new double[this.rows];
         for (int row = 0; row < this.values.length; row++) {
             values[row] = this.values[row][column];
         }
@@ -245,7 +245,7 @@ public class Matrix implements Addition<Matrix> {
      * @param column The column where the value is (Starts from 0)
      * @return The value you're getting from the Matrix
      */
-    public float get(int row, int column) {
+    public double get(int row, int column) {
         return this.values[row][column];
     }
 
@@ -257,7 +257,7 @@ public class Matrix implements Addition<Matrix> {
      * @param newValues The values you're setting
      * @throws InconsistentDimensionsException If the length of {@code newValues} isn't equal to the amount of rows
      */
-    public void setRow(int row, float[] newValues) {
+    public void setRow(int row, double[] newValues) {
         if (newValues.length != this.columns) {
             throw new InconsistentDimensionsException("The dimensions of the matrix is not consistent");
         }
@@ -272,7 +272,7 @@ public class Matrix implements Addition<Matrix> {
      * @param newValues The values you're setting
      * @throws InconsistentDimensionsException If the length of {@code newValues} isn't equal to the amount of columns
      */
-    public void setColumn(int column, float[] newValues) {
+    public void setColumn(int column, double[] newValues) {
         if (newValues.length != this.rows) {
             throw new InconsistentDimensionsException("The dimensions of the matrix is not consistent");
         }
@@ -289,16 +289,16 @@ public class Matrix implements Addition<Matrix> {
      * @param columns The column where the value is
      * @param newValue The value you're setting to the Matrix
      */
-    public void set(int row, int columns, float newValue) {
+    public void set(int row, int columns, double newValue) {
         this.values[row][columns] = newValue;
     }
 
     @Override
     public String toString() {
         String finalString = "";
-        for (float[] row : this.values) {
-            for (float value : row) {
-                finalString += Float.toString(value) + " ";
+        for (double[] row : this.values) {
+            for (double value : row) {
+                finalString += Double.toString(value) + " ";
             }
             // finalString += currentRow.substring(0,currentRow.length()-2) + "]\n";
             finalString += "\n";

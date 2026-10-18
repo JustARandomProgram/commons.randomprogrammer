@@ -5,7 +5,7 @@ package math.linearalgebra.Vector;
  * @author JustARandomProgram
  */
 public class Vector {
-    private float[] values;
+    protected double[] values;
     public final int dimensions;
 
     //EXCEPTIONS
@@ -28,7 +28,7 @@ public class Vector {
      * Creates a vector with given values
      * @param values The values of the vector
      */
-    public Vector(float... values) {
+    public Vector(double... values) {
         this.values = values;
         this.dimensions = values.length;
     }
@@ -42,7 +42,7 @@ public class Vector {
      */
     public Vector add(Vector vec) {
         if (dimensions != vec.dimensions) {throw new DimensionsAreNotEqualExeception("Dimension of the vectors are not equal");}
-        float[] newValues = new float[dimensions];
+        double[] newValues = new double[dimensions];
         for (int i = 0; i < newValues.length; i++) {
             newValues[i] = values[i] + vec.values[i];
         }
@@ -54,7 +54,7 @@ public class Vector {
      * @return The negated vector
      */
     public Vector neg() {
-        float[] newValues = new float[this.dimensions];
+        double[] newValues = new double[this.dimensions];
         for (int i = 0; i < newValues.length; i++) {
             newValues[i] = -this.values[i];
         }
@@ -66,8 +66,8 @@ public class Vector {
      * @param factor How much you're scaling the vector
      * @return The scaled vector
      */
-    public Vector scale(float factor) {
-        float[] newValues = new float[this.dimensions];
+    public Vector scale(double factor) {
+        double[] newValues = new double[this.dimensions];
         for (int i = 0; i < this.dimensions; i++) {
             newValues[i] = this.values[i] / factor;
         }
@@ -81,7 +81,7 @@ public class Vector {
      * @return The unit of the vector
      */
     public Vector unit() {
-        float magnitude = this.magnitude();
+        double magnitude = this.magnitude();
         return this.scale(1/magnitude);
     }
 
@@ -89,12 +89,12 @@ public class Vector {
      * Gets the length of the vector
      * @return The length of the vector
      */
-    public float magnitude() {
-        float magnitude = 0;
-        for (float d : this.values) {
+    public double magnitude() {
+        double magnitude = 0;
+        for (double d : this.values) {
             magnitude += d*d;
         }
-        return (float)Math.sqrt(magnitude);
+        return (double)Math.sqrt(magnitude);
     }
 
     /**
@@ -104,11 +104,11 @@ public class Vector {
      * @return The dot product
      * @throws DimensionsAreNotEqualException If the dimensions of the vectors are not equal
      */
-    public static float dot(Vector vec1, Vector vec2) {
-        if (vec1.dimensions != vec2.dimensions) throw new DimensionsAreNotEqualExeception("Dimension of the vectors are not equal");
+    public float dot(Vector vec) {
+        if (dimensions != vec.dimensions) throw new DimensionsAreNotEqualExeception("Dimension of the vectors are not equal");
         float dotProduct = 0;
-        for (int i = 0; i < vec1.dimensions; i++) {
-            dotProduct += vec1.values[i] * vec2.values[i];
+        for (int i = 0; i < dimensions; i++) {
+            dotProduct += values[i] * values[i];
         }
         return dotProduct;
     }
@@ -119,16 +119,16 @@ public class Vector {
      * @param vec2
      * @return The angle between the vectors
      */
-    public static float angle(Vector vec1, Vector vec2) {
-        return (float)Math.acos(Vector.dot(vec1.unit(), vec2.unit()));
+    public float angle(Vector vec) {
+        return (float)Math.acos(unit().dot(vec.unit()));
     }
-    
+
     @Override
     public String toString() {
         // return Arrays.toString(this.values);
         String finalString = "[";
-        for (float d : this.values) {
-            finalString += Float.toString(d) + ", ";
+        for (double d : this.values) {
+            finalString += Double.toString(d) + ", ";
         }
         return finalString.substring(0,finalString.length()-2) + "]";
     }
@@ -138,7 +138,7 @@ public class Vector {
      * @param index Where the value is located
      * @return The value
      */
-    public float get(int index) {
+    public double get(int index) {
         return this.values[index];
     }
 }
