@@ -1,7 +1,6 @@
 package math.linearalgebra.Matrix;
 
 import math.interfaces.Addition;
-import math.interfaces.NativeOperators;
 import math.linearalgebra.Vector.Vector;
 
 /**
