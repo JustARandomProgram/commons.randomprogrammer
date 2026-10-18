@@ -1,8 +1,6 @@
 package math.interfaces;
 
-import math.function.Expression;
-
-public interface Integratable<ExpressionType extends Expression<ExpressionType>> {
-    public ExpressionType indefiniteIntegral();
+public interface Integratable<ExpressionType> {
+    public ExpressionType indefiniteIntegral(double constant);
     public double definiteIntegral(double min, double max);
 }
