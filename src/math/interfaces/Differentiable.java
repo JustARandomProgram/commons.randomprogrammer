@@ -1,7 +1,7 @@
 package math.interfaces;
 
-import math.function.Function;
+import math.function.Expression;
 
-public interface Differentiable<T extends Function> {
+public interface Differentiable<T extends Expression> {
     public T derivative();
 }
