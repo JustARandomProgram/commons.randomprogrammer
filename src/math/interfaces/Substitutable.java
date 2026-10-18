@@ -1,6 +1,6 @@
 package math.interfaces;
 
 public interface Substitutable {
-    public double substitute(double x);
-    public double substitute(double... values);
+    public double evaluate(double x);
+    public double evaluate(double... values);
 }

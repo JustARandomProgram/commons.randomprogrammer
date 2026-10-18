@@ -1,7 +1,7 @@
 package math.interfaces;
 
-public interface Multiplication<T> {
-    public T multiply(T other);
-    public T reciprocal();
-    public T one();
+public interface Multiplication<NumberType> {
+    public NumberType multiply(NumberType other);
+    public NumberType reciprocal();
+    public NumberType one();
 }

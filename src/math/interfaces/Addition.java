@@ -1,7 +1,7 @@
 package math.interfaces;
 
-public interface Addition<T> {
-    public T add(T other);
-    public T neg();
-    public T zero();
+public interface Addition<NumberType> {
+    public NumberType add(NumberType other);
+    public NumberType neg();
+    public NumberType zero();
 }
